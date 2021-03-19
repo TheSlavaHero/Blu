@@ -16,7 +16,7 @@ public class BankConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/**")
-                .addResourceLocations("/WEB-INF/static/");
+                .addResourceLocations("/WEB-INF/static/index.html");
     }
 
 //    @Override
@@ -24,9 +24,9 @@ public class BankConfig implements WebMvcConfigurer {
 //        registry.addResourceHandler("/**").addResourceLocations("/");
 //    }
 
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/").setViewName("forward:/index.html");
-//    }
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:/index.html");
+    }
 
 }
