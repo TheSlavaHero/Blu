@@ -16,7 +16,7 @@ public class BankConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/**")
-                .addResourceLocations("/WEB-INF/static/index.html");
+                .addResourceLocations("/WEB-INF/static/");
     }
 
 //    @Override
