@@ -1,4 +1,4 @@
-package com.blubank;
+package com.blubank.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

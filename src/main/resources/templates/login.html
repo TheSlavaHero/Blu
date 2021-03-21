@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <h1> Login</h1>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<form>
+    <table>
+        <tr>
+            <td>
+                Email Address:
+            </td>
+            <td>
+                <input type=”text” email=””>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Password:
+            </td>
+            <td>
+                <input type=”Password” name=””>
+            </td>
+            <td>
+                <td th:text="${error} ? 'Wrong login or password. Please, try again.' : ''" />
+            </td>
+        </tr>
+    </table>
+</form>
+<a href="/">Go Home</a>
+</body>
+</html>
