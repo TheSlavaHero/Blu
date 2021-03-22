@@ -22,9 +22,8 @@
             <td>
                 <input type=”Password” name=””>
             </td>
-            <td>
-                <td th:text="${error} ? 'Wrong login or password. Please, try again.' : ''" />
-            </td>
+            <td th:text="${error} ? 'Wrong login or password. Please, try again.' : ''"></td>
+            <td th:text="${successRegistration} ? 'Registration was successful!' : ''"></td>
         </tr>
     </table>
 </form>

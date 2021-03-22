@@ -7,10 +7,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("SELECT u FROM User u where u.login = :login")
-    User findByLogin(@Param("login") String login);
+    @Query("SELECT u FROM User u where u.email = :email")
+    User findByEmail(@Param("email") String email);
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false " +
-            "END FROM User u WHERE u.login = :login")
-    boolean existsByLogin(@Param("login") String login);
+            "END FROM User u WHERE u.email = :email")
+    boolean existsByEmail(@Param("email") String email);
 }

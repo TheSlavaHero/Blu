@@ -22,8 +22,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User findByLogin(String login) {
-        return userRepository.findByLogin(login);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Transactional
@@ -31,7 +31,7 @@ public class UserService {
         ids.forEach(id -> {
             Optional<User> user = userRepository.findById(id);
             user.ifPresent(u -> {
-                if ( ! AppConfig.ADMIN.equals(u.getLogin())) {
+                if ( ! AppConfig.ADMIN.equals(u.getEmail())) {
                     userRepository.deleteById(u.getId());
                 }
             });
@@ -39,13 +39,14 @@ public class UserService {
     }
 
     @Transactional
-    public boolean addUser(String login, String passHash,
-                           UserRole role, String email,
-                           String phone, String age) {
-        if (userRepository.existsByLogin(login))
+    public boolean addUser(String name, String surname,
+                           String passHash, UserRole role,
+                           String email, String phone,
+                           String age) {
+        if (userRepository.existsByEmail(email))
             return false;
 
-        User user = new User(login, passHash, role, email, phone, age);
+        User user = new User(name, surname, passHash, role, email, phone, age);
         userRepository.save(user);
 //        send(email, user.getAuthKey());
 
@@ -53,8 +54,18 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(String login, String email, String phone, String age) {
-        User user = userRepository.findByLogin(login);
+    public boolean checkUser(String email) {//returns true if exists
+        if (userRepository.existsByEmail(email)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    @Transactional
+    public void updateUser(String email, String phone, String age) {
+        User user = userRepository.findByEmail(email);
         if (user == null)
             return;
 
@@ -66,17 +77,15 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(String login, Boolean authentication, String authKey) {
-        User user = userRepository.findByLogin(login);
+    public void updateUser(String email, String authKey) {
+        User user = userRepository.findByEmail(email);
         if (user == null)
             return;
-
-        user.setAuthentication(authentication);
         user.setAuthKey(authKey);
 
         userRepository.save(user);
     }
 
-    public void addUser(String admin, String password, UserRole admin1, String s, String s1) {
-    }
+//    public void addUser(String admin, String password, UserRole admin1, String s, String s1) {
+//    }
 }

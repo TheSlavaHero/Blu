@@ -3,16 +3,9 @@ package com.blubank;
 import com.blubank.entity.User;
 import com.blubank.entity.UserRole;
 import com.blubank.entity.UserService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.RequestParam;
-
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -27,15 +20,16 @@ public class BankController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/login")
-    public String login(@RequestParam(name="error", required=false, defaultValue="false") Boolean error, Model model) {
-        model.addAttribute("error", error);
-        return "login";
-    }
+    @Autowired
+    private EmailValidator emailValidator;
 
-    @GetMapping("register")
-    public String register() {
-        return "register";
+    @GetMapping("/login")
+    public String login(@RequestParam(name="error", required=false, defaultValue="false") Boolean error,
+                        @RequestParam(name="successRegistration", required=false, defaultValue="false") Boolean successRegistration,
+                        Model model) {
+        model.addAttribute("error", error);
+        model.addAttribute("successRegistration", successRegistration);
+        return "login";
     }
 
     @GetMapping("unauthorized")
@@ -44,8 +38,12 @@ public class BankController {
     }
 
     @GetMapping("/registerUser")
-    public String newUserForm(Model model) {
+    public String newUserForm(@RequestParam(name="emailExists", required=false, defaultValue="false") Boolean emailExists,
+                              @RequestParam(name="wrongEmail", required=false, defaultValue="false") Boolean wrongEmail,
+                              Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("emailExists", emailExists);
+        model.addAttribute("wrongEmail", wrongEmail);
         return "register";
     }
 
@@ -56,48 +54,55 @@ public class BankController {
     }
 
     @RequestMapping(value = "/newuser", method = RequestMethod.POST)
-    public String update(@RequestParam String login,
+    public String update(@RequestParam String name,
+                         @RequestParam String surname,
                          @RequestParam String password,
-                         @RequestParam(required = false) String email,
+                         @RequestParam String email,
                          @RequestParam(required = false) String phone,
                          @RequestParam(required = false) String age,
                          Model model) {
         String passHash = passwordEncoder.encode(password);
-        User dbUser = userService.findByLogin(login);
-
-        if ( ! userService.addUser(login, passHash, UserRole.USER, email, phone, age)) {
-            model.addAttribute("exists", true);
-            model.addAttribute("login", login);
-            return "register";
-        }
-
-        return "redirect:/";
-    }
-
-//    @RequestMapping(value = "/newuser", method = RequestMethod.POST)
-//    public String update(@RequestParam User user,
-//                         @RequestParam(required = false) String login,
-//                         @RequestParam(required = false) String password,
-//                         @RequestParam(required = false) String email,
-//                         @RequestParam(required = false) String phone,
-//                         @RequestParam(required = false) String age,
-//                         Model model) {
-//        String passHash = passwordEncoder.encode(user.getPassword());
-//        User dbUser = userService.findByLogin(user.getLogin());
-//
-//        if ( ! userService.addUser(user.getLogin(), user.getPassword(), UserRole.USER, email, phone, age)) {
-//            model.addAttribute("exists", true);
-//            model.addAttribute("login", login);
-//            return "register";
+        User user = new User(name, surname, passHash, UserRole.USER, email, phone, age);
+//        Boolean emailExists = false;
+//        Boolean wrongEmail = false;
+//        Boolean samePassword = false;
+//        if (userService.checkUser(email)) {
+//            model.addAttribute("emailExists", true);
+//            emailExists = true;
 //        }
-//
-//        return "redirect:/";
-//    }
+//        if (!emailValidator.isValid(email)) {
+//            model.addAttribute("wrongEmail", true);
+//            wrongEmail = true;
+//        }
+//        if () {
+//            model.addAttribute("samePassword", true);
+//            samePassword = false;
+//        }
+
+        if (!checkUser(user, model)) {
+            return "redirect:/registerUser";
+        }
+        userService.addUser(name, surname, passHash, UserRole.USER, email, phone, age);
+        model.addAttribute("successRegistration", true);
+        return "redirect:/login";
+    }
 
         private org.springframework.security.core.userdetails.User getCurrentUser() {
         return (org.springframework.security.core.userdetails.User) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
+    }
+    public boolean checkUser(User user, Model model) {//returns true if everything is ok
+        Boolean error = false;
+        if (userService.checkUser(user.getEmail())) {
+            model.addAttribute("emailExists", true);
+            error = true;
+        }
+        if (!emailValidator.isValid(user.getEmail())) {
+            model.addAttribute("wrongEmail", true);
+            error = true;
+        }
+        return !error;
     }
 }

@@ -9,7 +9,8 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    private String login;
+    private String name;
+    private String surname;
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -17,31 +18,19 @@ public class User {
     private String email;
     private String phone;
     private String age;
-
-    private boolean authentication;
     private String authKey;
 
     public User() {
     }
 
-    public User(String login, String password, UserRole role, String email, String phone, String age) {
-        this.id = id;
-        this.login = login;
+    public User(String name, String surname, String password, UserRole role, String email, String phone, String age) {
+        this.name = name;
+        this.surname = surname;
         this.password = password;
         this.role = role;
         this.email = email;
         this.phone = phone;
         this.age = age;
-        this.authentication = authentication;
-        this.authKey = authKey;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getPassword() {
@@ -92,12 +81,20 @@ public class User {
         this.id = id;
     }
 
-    public boolean isAuthentication() {
-        return authentication;
+    public String getName() {
+        return name;
     }
 
-    public void setAuthentication(boolean authentication) {
-        this.authentication = authentication;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getAuthKey() {

@@ -1,6 +1,7 @@
 package com.blubank.config;
 
 import com.blubank.entity.UserService;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,11 @@ public class AppConfig extends GlobalMethodSecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public EmailValidator emailValidator () {
+        return EmailValidator.getInstance();
     }
 
 //    @Bean
