@@ -30,9 +30,4 @@ public class AppConfig extends GlobalMethodSecurityConfiguration {
         return EmailValidator.getInstance();
     }
 
-//    @Bean
-//    public Service userService() {
-//        UserService service = new SimpleUserService();
-//        return service;
-//    }
 }
