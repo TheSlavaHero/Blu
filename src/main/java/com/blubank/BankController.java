@@ -3,6 +3,8 @@ package com.blubank;
 import com.blubank.entity.User;
 import com.blubank.entity.UserRole;
 import com.blubank.entity.UserService;
+import com.blubank.entity.ApplicationUserForm;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -10,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class BankController {
@@ -40,46 +42,34 @@ public class BankController {
     @GetMapping("/registerUser")
     public String newUserForm(@RequestParam(name="emailExists", required=false, defaultValue="false") Boolean emailExists,
                               @RequestParam(name="wrongEmail", required=false, defaultValue="false") Boolean wrongEmail,
+                              @RequestParam(name="samePassword", required=false, defaultValue="false") Boolean samePassword,
                               Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("applicationUserForm", new ApplicationUserForm());
         model.addAttribute("emailExists", emailExists);
         model.addAttribute("wrongEmail", wrongEmail);
+        model.addAttribute("samePassword", samePassword);
         return "register";
     }
 
     @PostMapping("/registerUser")
-    public String greetingSubmit(@ModelAttribute User user, Model model) {
-        model.addAttribute("user", user);
+    public String greetingSubmit(@ModelAttribute ApplicationUserForm applicationUserForm, Model model) {
+        model.addAttribute("applicationUserForm", applicationUserForm);
         return "register";
     }
 
     @RequestMapping(value = "/newuser", method = RequestMethod.POST)
-    public String update(@RequestParam String name,
-                         @RequestParam String surname,
-                         @RequestParam String password,
-                         @RequestParam String email,
+    public String update(@RequestParam(required = false, name = "user.name") String name,
+                         @RequestParam(required = false, name = "user.surname") String surname,
+                         @RequestParam(required = false, name = "user.password") String password,
+                         @RequestParam(required = false, name = "user.email")String email,
+                         @RequestParam(required = false, name = "confirmPassword") String confirmPassword,
                          @RequestParam(required = false) String phone,
                          @RequestParam(required = false) String age,
                          Model model) {
         String passHash = passwordEncoder.encode(password);
         User user = new User(name, surname, passHash, UserRole.USER, email, phone, age);
-//        Boolean emailExists = false;
-//        Boolean wrongEmail = false;
-//        Boolean samePassword = false;
-//        if (userService.checkUser(email)) {
-//            model.addAttribute("emailExists", true);
-//            emailExists = true;
-//        }
-//        if (!emailValidator.isValid(email)) {
-//            model.addAttribute("wrongEmail", true);
-//            wrongEmail = true;
-//        }
-//        if () {
-//            model.addAttribute("samePassword", true);
-//            samePassword = false;
-//        }
 
-        if (!checkUser(user, model)) {
+        if (!checkUser(user, model, password, confirmPassword)) {
             return "redirect:/registerUser";
         }
         userService.addUser(name, surname, passHash, UserRole.USER, email, phone, age);
@@ -93,16 +83,20 @@ public class BankController {
                 .getAuthentication()
                 .getPrincipal();
     }
-    public boolean checkUser(User user, Model model) {//returns true if everything is ok
-        Boolean error = false;
+    public boolean checkUser(User user, Model model, String password, String confirmPassword) {//returns true if everything is ok
+        Boolean loginOK = true;
         if (userService.checkUser(user.getEmail())) {
             model.addAttribute("emailExists", true);
-            error = true;
+            loginOK = false;
+        }
+        if (!(password.equals(confirmPassword))) {
+            model.addAttribute("samePassword", true);
+            loginOK = false;
         }
         if (!emailValidator.isValid(user.getEmail())) {
             model.addAttribute("wrongEmail", true);
-            error = true;
+            loginOK = false;
         }
-        return !error;
+        return loginOK;
     }
 }
