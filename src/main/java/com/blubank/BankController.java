@@ -5,6 +5,7 @@ import com.blubank.entity.UserRole;
 import com.blubank.entity.UserService;
 import com.blubank.entity.ApplicationUserForm;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -83,12 +84,6 @@ public class BankController {
         return "redirect:/login";
     }
 
-        private org.springframework.security.core.userdetails.User getCurrentUser() {
-        return (org.springframework.security.core.userdetails.User) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-    }
     public boolean checkUser(User user, Model model, String password, String confirmPassword) {//returns true if everything is ok
         Boolean loginOK = true;
         if (userService.checkUser(user.getEmail())) {
@@ -106,8 +101,28 @@ public class BankController {
         return loginOK;
     }
 
-    @RequestMapping("/main")
+    @GetMapping("/main")
+    public String main(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
+                       Model model) {
+        if (user != null) {
+            System.out.println("user is not null");
+            User currentUser = userService.findByEmail(user.getUsername());
+            String name = "Welcome back, " + currentUser.getName() + " " + currentUser.getSurname() + "!";
+            model.addAttribute("name", name);
+        } else {
+            System.out.println("user is null");
+            model.addAttribute("name", "");
+        }
+        return "main";
+    }
+    @PostMapping("/main")
     public String main() {
         return "main";
     }
+//    private org.springframework.security.core.userdetails.User getCurrentUser() {
+//        return (org.springframework.security.core.userdetails.User)SecurityContextHolder
+//                .getContext()
+//                .getAuthentication()
+//                .getPrincipal();
+//    }
 }
