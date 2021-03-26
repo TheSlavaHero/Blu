@@ -85,7 +85,4 @@ public class UserService {
 
         userRepository.save(user);
     }
-
-//    public void addUser(String admin, String password, UserRole admin1, String s, String s1) {
-//    }
 }

@@ -1,7 +1,9 @@
 package com.blubank.config;
 
+import com.blubank.entity.UserRole;
 import com.blubank.entity.UserService;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,17 @@ public class AppConfig extends GlobalMethodSecurityConfiguration {
     @Bean
     public EmailValidator emailValidator () {
         return EmailValidator.getInstance();
+    }
+
+    @Bean
+    public CommandLineRunner demo(final UserService userService,
+                                  final PasswordEncoder encoder) {
+        return new CommandLineRunner() {
+            @Override
+            public void run(String... strings) {
+                userService.addUser("Super", "Admin", encoder.encode("qwe"), UserRole.ADMIN, "slava", "88005553535", "19");
+            }
+        };
     }
 
 }

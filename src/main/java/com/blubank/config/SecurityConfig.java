@@ -1,6 +1,7 @@
 package com.blubank.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -10,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Qualifier("userDetailsServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -21,7 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder);
-    }
+//        auth.inMemoryAuthentication()
+//                .withUser("slava").password(passwordEncoder.encode("pass")).roles("ADMIN");
+    }//hardcode admin login and password
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,8 +35,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/")
                     .permitAll()
+                .antMatchers("/")
+                .permitAll()
                 .antMatchers("/register")
                     .permitAll()
+                .antMatchers("/login*")
+                    .permitAll()
+                .antMatchers("/main")
+                    .hasAnyRole("USER", "ADMIN")
+//                .anyRequest()
+//                    .authenticated() //turns off bootstrap
                 .and()
             .exceptionHandling()
                 .accessDeniedPage("/unauthorized")
@@ -39,15 +52,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/j_spring_security_check")
+                .defaultSuccessUrl("/main", true)
                 .failureUrl("/login?error=true")
-                .usernameParameter("j_login")
-                .passwordParameter("j_password")
+                .usernameParameter("login")
+                .passwordParameter("password")
+                .successForwardUrl("/main")
                 .permitAll()
-//                .and()
-//            .logout()
-//                .permitAll()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/login?logout")
+                .and()
+            .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
         ;
     }
 }

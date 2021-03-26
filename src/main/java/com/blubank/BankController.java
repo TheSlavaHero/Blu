@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class BankController {
@@ -28,9 +27,16 @@ public class BankController {
     @GetMapping("/login")
     public String login(@RequestParam(name="error", required=false, defaultValue="false") Boolean error,
                         @RequestParam(name="successRegistration", required=false, defaultValue="false") Boolean successRegistration,
+                        @RequestParam(name="logout", required=false, defaultValue="false") Boolean logout,
                         Model model) {
         model.addAttribute("error", error);
         model.addAttribute("successRegistration", successRegistration);
+        model.addAttribute("logout", logout);
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login() {
         return "login";
     }
 
@@ -98,5 +104,10 @@ public class BankController {
             loginOK = false;
         }
         return loginOK;
+    }
+
+    @RequestMapping("/main")
+    public String main() {
+        return "main";
     }
 }
