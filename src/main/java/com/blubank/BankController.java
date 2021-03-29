@@ -105,12 +105,10 @@ public class BankController {
     public String main(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                        Model model) {
         if (user != null) {
-            System.out.println("user is not null");
             User currentUser = userService.findByEmail(user.getUsername());
             String name = "Welcome back, " + currentUser.getName() + " " + currentUser.getSurname() + "!";
             model.addAttribute("name", name);
         } else {
-            System.out.println("user is null");
             model.addAttribute("name", "");
         }
         return "main";
