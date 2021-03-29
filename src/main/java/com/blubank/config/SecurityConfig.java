@@ -41,6 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .antMatchers("/main")
                     .hasAnyRole("USER", "ADMIN")
+                .antMatchers("/about")
+                .hasAnyRole("USER", "ADMIN")
 //                .anyRequest()
 //                    .authenticated() //turns off bootstrap
                 .and()

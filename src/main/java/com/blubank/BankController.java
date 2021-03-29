@@ -119,10 +119,10 @@ public class BankController {
     public String main() {
         return "main";
     }
-//    private org.springframework.security.core.userdetails.User getCurrentUser() {
-//        return (org.springframework.security.core.userdetails.User)SecurityContextHolder
-//                .getContext()
-//                .getAuthentication()
-//                .getPrincipal();
-//    }
+
+    @RequestMapping("/about")
+    public String about() {
+        return "about";
+    }
+
 }
