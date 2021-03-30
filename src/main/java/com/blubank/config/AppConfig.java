@@ -39,6 +39,8 @@ public class AppConfig extends GlobalMethodSecurityConfiguration {
             @Override
             public void run(String... strings) {
                 userService.addUser("Super", "Admin", encoder.encode("qwe"), UserRole.ADMIN, "slava", "88005553535", "19");
+                userService.addUser("Sohpie", "", encoder.encode("password1"), UserRole.MODERATOR, "Sophie", "", "");
+                userService.addUser("Giga", "Tester", encoder.encode("test"), UserRole.MODERATOR, "test", "", "");
             }
         };
     }
