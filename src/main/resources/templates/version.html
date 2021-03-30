@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <link href="css/bootstrap.css" rel="stylesheet">
-    <title>BluBank</title>
+    <title>Versions</title>
 </head>
 <body style="background-color:#AFE7FF">
 
@@ -19,7 +19,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/main">Home</a>
+                    <a class="nav-link" href="/main">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">New Card</a>
@@ -42,45 +42,22 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">About Us</a>
+                    <a class="nav-link" aria-current="page" href="/about">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/version">Versions</a>
+                    <a class="nav-link active" aria-current="page" href="/version">Versions</a>
                 </li>
             </ul>
             <form class="d-flex" action="/logout" method="post">
-                <p th:text="${name}" class="form-control me-2" style="margin: auto;">USER_NOT_FOUND</p>
                 <button class="btn btn-outline-success" type="submit">Logout</button>
             </form>
         </div>
     </div>
 </nav>
-
-
-<div id="carouselExampleInterval" class="carousel slide mt-4 mb-5 " data-bs-ride="carousel"
-     style="max-width: 1300px;margin: auto;">
-    <div class="carousel-inner">
-        <div class="carousel-item active" data-bs-interval="5000">
-            <img src="images/team.jpg" class="d-block w-100" alt="BluTeam">
-        </div>
-        <div class="carousel-item" data-bs-interval="5000">
-            <img src="images/engineer.jpg" class="d-block w-100" alt="engineer">
-        </div>
-        <div class="carousel-item" data-bs-interval="5000">
-            <img src="images/cards.jpg" class="d-block w-100" alt="cards">
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+<div class="mt-2 mb-3 position-relative start-50 translate-middle-x w-75 p-3 rounded-3"
+     style="background: #FFFFFF; border-left:5px solid #8488FF">
+    <p><strong style="margin: auto;" >Pre-Alpha:</strong></p>
+    <p>v0.3 - First deploy to Heroku; version.html added; version on login page added; test login and password added.</p>
 </div>
-
-<p class=" font-weight-normal text-center align-bottom w-auto p-4" style="color: #000000;background: #FFFFFF">BluBank logo, design and pictures were taken from videogame Team Fortress 2. Team Fortress 2 rights belong to Valve (c).</p>
-<script src="js/bootstrap.js"></script>
 </body>
 </html>

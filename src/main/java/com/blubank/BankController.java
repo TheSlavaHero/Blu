@@ -123,4 +123,9 @@ public class BankController {
         return "about";
     }
 
+    @RequestMapping("/version")
+    public String version() {
+        return "version";
+    }
+
 }

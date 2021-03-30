@@ -21,7 +21,7 @@ public class BankConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("forward:/main");
+        registry.addViewController("/").setViewName("forward:/login");
         registry.addViewController("/index.html").setViewName("forward:/main");
     }
 
