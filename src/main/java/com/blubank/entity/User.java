@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table (name = "Clients")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -18,7 +18,7 @@ public class User {
     private String email;
     private String phone;
     private String age;
-    private String authKey;
+    private String authkey;
 
     public User() {
     }
@@ -98,10 +98,10 @@ public class User {
     }
 
     public String getAuthKey() {
-        return authKey;
+        return authkey;
     }
 
     public void setAuthKey(String authKey) {
-        this.authKey = authKey;
+        this.authkey = authKey;
     }
 }
