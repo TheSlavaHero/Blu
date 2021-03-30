@@ -36,3 +36,9 @@ build/
 src/main/resources/templates/css
 src/main/resources/templates/js
 src/main/resources/templates/images
+
+out
+.mvn
+lib
+mvnw
+mvnw.cmd
