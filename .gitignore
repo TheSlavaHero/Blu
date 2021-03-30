@@ -33,5 +33,6 @@ build/
 .vscode/
 
 ### Bootstrap ###
-src/main/webapp/WEB-INF/static/css
-src/main/webapp/WEB-INF/static/js
+src/main/resources/templates/css
+src/main/resources/templates/js
+src/main/resources/templates/images
