@@ -44,7 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/version")
                     .hasAnyRole("USER","MODERATOR" ,"ADMIN")
                 .antMatchers("/about")
-                .hasAnyRole("USER","MODERATOR" , "ADMIN")
+                    .hasAnyRole("USER","MODERATOR" , "ADMIN")
+                .antMatchers("/newcard")
+                    .hasAnyRole("USER","MODERATOR" , "ADMIN")
 //                .anyRequest()
 //                    .authenticated() //turns off bootstrap
                 .and()

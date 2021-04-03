@@ -42,3 +42,4 @@ out
 lib
 mvnw
 mvnw.cmd
+.gitignore

@@ -128,4 +128,9 @@ public class BankController {
         return "version";
     }
 
+    @RequestMapping("/newcard")
+    public String newCard() {
+        return "newcard";
+    }
+
 }

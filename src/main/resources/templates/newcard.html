@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <title>New Card</title>
+</head>
+<body style="background-color:#AFE7FF">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand offset-md-1" href="/main">
+            <img src="images/logowhite.jpg" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/main">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/newcard">New Card</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">My Cards</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Transactions
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Convert currency</a></li>
+                        <li><a class="dropdown-item" href="#">Send money</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Want some money?</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/version">Versions</a>
+                </li>
+            </ul>
+            <form class="d-flex" action="/logout" method="post">
+                <button class="btn btn-outline-success" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+
+<!--<div class="card">-->
+<!--    <img src="..." class="card-img-top" alt="...">-->
+<!--    <div class="card-body">-->
+<!--        <h5 class="card-title">Card title</h5>-->
+<!--        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+<!--        <a href="#" class="btn btn-primary">Go somewhere</a>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="card position-relative top-0 mt-3 start-50 translate-middle-x rounded-3" style="width: 25rem;">-->
+<!--    <img src="..." class="card-img-top" alt="...">-->
+<!--    <div class="card-body">-->
+<!--        <h5 class="card-title">Card title</h5>-->
+<!--        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+<!--        <a href="#" class="btn btn-primary">Go somewhere</a>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="row  justify-content-evenly position-relative top-0 mt-xxl-5 start-50 translate-middle-x" style="width: 60%;">
+    <div class="col-4 p-3">
+        <div class="card" style="border:1px solid #AFE7FF">
+            <img src="images/redcardtext.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">RedCard</h5>
+                <p class="card-text">Good enough for your enemies.</p>
+                <p>Preferential term: up to 55 days</p>
+                <p>Interest rate: 3.6%</p>
+                <p>Cash withdrawal in all ATMs: 1%</p>
+                <p>Percentage on the balance at the end of the month: 7%</p>
+                <p>Cashback: N/A</p>
+                <a href="#" class="btn btn-outline-danger position-relative start-50 translate-middle-x">I want a RedCard!</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 p-3">
+        <div class="card" style="border:1px solid #AFE7FF">
+            <img src="images/bluecardtext.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">BluCard</h5>
+                <p class="card-text"><strong>The best offer for our clients.</strong></p>
+                <p>Preferential term: <strong>up to 100 days</strong></p>
+                <p>Interest rate: <strong>1.5%</strong></p>
+                <p>Cash withdrawal in all ATMs: <strong>0%</strong></p>
+                <p>Percentage on the balance at the end of the month: <strong>20%</strong></p>
+                <p>Cashback: <strong>up to 25%</strong></p>
+                <a href="#" class="btn btn-outline-primary position-relative start-50 translate-middle-x">I want a BluCard!</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 p-3">
+        <div class="card" style="border:1px solid #AFE7FF">
+            <img src="images/greencardtext.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">GreenCard</h5>
+                <p class="card-text">A solid card for everyday use.</p>
+                <p>Preferential term: up to 72 days</p>
+                <p>Interest rate: 2.8%</p>
+                <p>Cash withdrawal in all ATMs: 0.5%</p>
+                <p>Percentage on the balance at the end of the month: 10%</p>
+                <p>Cashback: up to 10%</p>
+                <a href="#" class="btn btn-outline-success position-relative start-50 translate-middle-x">I want a GreenCard!</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="js/bootstrap.js"></script>
+</body>
+</html>
