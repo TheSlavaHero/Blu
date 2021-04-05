@@ -1,4 +1,4 @@
-package com.blubank.entity;
+package com.blubank.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        com.blubank.entity.User user = userService.findByEmail(email);
+        com.blubank.entity.User.User user = userService.findByEmail(email);
         if (user == null)
             throw new UsernameNotFoundException(email + " not found");
 

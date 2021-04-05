@@ -1,15 +1,12 @@
-package com.blubank.entity;
+package com.blubank.entity.User;
 
 import com.blubank.config.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-
-import static com.blubank.mail.SendAuthCodeViaMail.send;
 
 @Service
 public class UserService {

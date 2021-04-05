@@ -12,6 +12,7 @@ create table clients
     phone    varchar(255) default NULL::character varying,
     age      varchar(255) default NULL::character varying,
     authkey  varchar(255) default NULL::character varying
+--     card     varchar(255) default NULL::character varying
 );
 
 CREATE SEQUENCE hibernate_sequence START 1;

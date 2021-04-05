@@ -1,4 +1,4 @@
-package com.blubank.entity;
+package com.blubank.entity.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

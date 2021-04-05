@@ -1,4 +1,4 @@
-package com.blubank.entity;
+package com.blubank.entity.User;
 
 public enum UserRole {
     ADMIN, MODERATOR, USER;

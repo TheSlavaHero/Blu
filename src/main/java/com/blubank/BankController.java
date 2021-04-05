@@ -1,12 +1,14 @@
 package com.blubank;
 
-import com.blubank.entity.User;
-import com.blubank.entity.UserRole;
-import com.blubank.entity.UserService;
-import com.blubank.entity.ApplicationUserForm;
+import com.blubank.entity.Card.CardRepository;
+import com.blubank.entity.Card.CardService;
+import com.blubank.entity.Card.CardType;
+import com.blubank.entity.User.User;
+import com.blubank.entity.User.UserRole;
+import com.blubank.entity.User.UserService;
+import com.blubank.entity.User.ApplicationUserForm;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class BankController {
 
     @Autowired
     private EmailValidator emailValidator;
+
+    @Autowired
+    private CardService cardService;
 
     @GetMapping("/login")
     public String login(@RequestParam(name="error", required=false, defaultValue="false") Boolean error,
@@ -128,9 +133,19 @@ public class BankController {
         return "version";
     }
 
-    @RequestMapping("/newcard")
+    @GetMapping("/newcard")
     public String newCard() {
         return "newcard";
+    }
+
+    @PostMapping("/newcard/{cardType}")
+    public String createCard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
+                             @PathVariable CardType cardType,
+                             Model model) {
+        User currentUser = userService.findByEmail(user.getUsername());
+        cardService.addCard(currentUser, cardType);
+
+        return "redirect:/main";
     }
 
 }

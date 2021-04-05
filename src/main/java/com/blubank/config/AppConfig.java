@@ -1,7 +1,7 @@
 package com.blubank.config;
 
-import com.blubank.entity.UserRole;
-import com.blubank.entity.UserService;
+import com.blubank.entity.User.UserRole;
+import com.blubank.entity.User.UserService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

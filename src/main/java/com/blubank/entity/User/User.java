@@ -1,10 +1,20 @@
-package com.blubank.entity;
+package com.blubank.entity.User;
+
+import com.blubank.entity.Card.Card;
+import com.blubank.entity.Card.CardType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table (name = "Clients")
-public class User {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +29,10 @@ public class User {
     private String phone;
     private String age;
     private String authkey;
-
+    @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //    private Set cards;
+    //    private List<Card> cards = new ArrayList<>();
+    private Set<Card> cards = new HashSet(0);
     public User() {
     }
 
@@ -103,5 +116,16 @@ public class User {
 
     public void setAuthKey(String authKey) {
         this.authkey = authKey;
+    }
+
+    public Set getCards() {
+        return cards;
+    }
+
+    public void setCards(Set<Card> cards) {
+        this.cards = cards;
+    }
+    public void addCard(Card card) {
+        this.cards.add(card);
     }
 }

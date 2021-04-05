@@ -1,4 +1,4 @@
-package com.blubank.entity;
+package com.blubank.entity.User;
 
 public class ApplicationUserForm {
     private User user;
