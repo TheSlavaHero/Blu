@@ -18,13 +18,15 @@ public class Card implements Serializable {
     private Long id;
 
     private String number;
-    private Calendar expiryDate;
+    private String expiryDate;
     @Enumerated(EnumType.STRING)
     private CardType type;
+    private int cvc;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User cardHolder;
+    private double balance;
 
 //    @OneToMany(mappedBy = "cardFrom")
 //    private List<Transaction> transactionsFrom = new ArrayList<>();
@@ -38,11 +40,13 @@ public class Card implements Serializable {
     @OneToMany(mappedBy = "cardTo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Transaction> transactionsTo = new HashSet(0);
 
-    public Card(String number, Calendar expiryDate, CardType type, User cardHolder) {
+    public Card(String number, String expiryDate, CardType type, int cvc, User cardHolder, double balance) {
         this.number = number;
         this.expiryDate = expiryDate;
         this.type = type;
+        this.cvc = cvc;
         this.cardHolder = cardHolder;
+        this.balance = balance;
     }
 
     public Card() {
@@ -64,11 +68,19 @@ public class Card implements Serializable {
         this.number = number;
     }
 
-    public Calendar getExpiryDate() {
+    public int getCvc() {
+        return cvc;
+    }
+
+    public void setCvc(int cvc) {
+        this.cvc = cvc;
+    }
+
+    public String getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Calendar expiryDate) {
+    public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
     }
 
@@ -102,5 +114,13 @@ public class Card implements Serializable {
 
     public void setTransactionsTo(Set transactionsTo) {
         this.transactionsTo = transactionsTo;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }

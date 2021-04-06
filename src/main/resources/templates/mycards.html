@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link href="css/bootstrap.css" rel="stylesheet">
-    <title>BluBank</title>
+    <title>My Cards</title>
 </head>
 <body style="background-color:#AFE7FF">
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand offset-md-1" href="/main">
@@ -19,13 +18,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/main">Home</a>
+                    <a class="nav-link" href="/main">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/newcard">New Card</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/mycards">My Cards</a>
+                    <a class="nav-link active" href="/mycards">My Cards</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -42,45 +41,54 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">About Us</a>
+                    <a class="nav-link" aria-current="page" href="/about">About Us</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/version">Versions</a>
                 </li>
             </ul>
             <form class="d-flex" action="/logout" method="post">
-                <p th:text="${name}" class="form-control me-2" style="margin: auto;">USER_NOT_FOUND</p>
                 <button class="btn btn-outline-success" type="submit">Logout</button>
             </form>
         </div>
     </div>
 </nav>
 
+<table class="table bg-light table-striped position-relative start-50 translate-middle-x mt-3 w-50 p-3 rounded-3">
+    <thead>
+    <tr>
+        <td><b>Card number</b></td>
+        <td><b>CVC</b></td>
+        <td><b>Expiry date</b></td>
+        <td><b>Card type</b></td>
+        <td><b>Balance</b></td>
+    </tr>
+    </thead>
 
-<div id="carouselExampleInterval" class="carousel slide mt-4 mb-5 " data-bs-ride="carousel"
-     style="max-width: 1300px;margin: auto;">
-    <div class="carousel-inner">
-        <div class="carousel-item active" data-bs-interval="5000">
-            <img src="images/team.jpg" class="d-block w-100" alt="BluTeam">
+    <tr th:each="card : ${cards}">
+            <div th:if="${card.type == T(com.blubank.entity.Card.CardType).RED}">
+                <td th:text="${card.number}" class="table-danger"></td>
+                <td th:text="${card.cvc}" class="table-danger"></td>
+                <td th:text="${card.expiryDate}" class="table-danger"></td>
+                <td th:text="${card.type}" class="table-danger"></td>
+                <td th:text="${card.balance}" class="table-danger"></td>
+            </div>
+        <div th:if="${card.type == T(com.blubank.entity.Card.CardType).BLU}">
+            <td th:text="${card.number}" class="table-primary"></td>
+            <td th:text="${card.cvc}" class="table-primary"></td>
+            <td th:text="${card.expiryDate}" class="table-primary"></td>
+            <td th:text="${card.type}" class="table-primary"></td>
+            <td th:text="${card.balance}" class="table-primary"></td>
         </div>
-        <div class="carousel-item" data-bs-interval="5000">
-            <img src="images/engineer.jpg" class="d-block w-100" alt="engineer">
+        <div th:if="${card.type == T(com.blubank.entity.Card.CardType).GREEN}">
+            <td th:text="${card.number}" class="table-success"></td>
+            <td th:text="${card.cvc}" class="table-success"></td>
+            <td th:text="${card.expiryDate}" class="table-success"></td>
+            <td th:text="${card.type}" class="table-success"></td>
+            <td th:text="${card.balance}" class="table-success"></td>
         </div>
-        <div class="carousel-item" data-bs-interval="5000">
-            <img src="images/cards.jpg" class="d-block w-100" alt="cards">
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
-
-<p class=" font-weight-normal text-center align-bottom w-auto p-4" style="color: #000000;background: #FFFFFF">BluBank logo, design and pictures were taken from videogame Team Fortress 2. All Team Fortress 2 rights belong to Valve (c).</p>
+    </tr>
+</table>
 <script src="js/bootstrap.js"></script>
 </body>
 </html>

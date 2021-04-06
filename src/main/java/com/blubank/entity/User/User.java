@@ -30,8 +30,6 @@ public class User implements Serializable {
     private String age;
     private String authkey;
     @OneToMany(mappedBy = "cardHolder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    //    private Set cards;
-    //    private List<Card> cards = new ArrayList<>();
     private Set<Card> cards = new HashSet(0);
     public User() {
     }

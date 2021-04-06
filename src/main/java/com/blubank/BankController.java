@@ -140,12 +140,24 @@ public class BankController {
 
     @PostMapping("/newcard/{cardType}")
     public String createCard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
-                             @PathVariable CardType cardType,
-                             Model model) {
+                             @PathVariable CardType cardType) {
         User currentUser = userService.findByEmail(user.getUsername());
         cardService.addCard(currentUser, cardType);
 
-        return "redirect:/main";
+        return "redirect:/mycards";
     }
 
+    @GetMapping("/mycards")
+    public String myCards(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
+                          Model model
+                          ) {
+        User currentUser = userService.findByEmail(user.getUsername());
+        model.addAttribute("cards", cardService.allCards(currentUser));
+        return "mycards";
+    }
+
+    @PostMapping("/mycards")
+    public String myCards() {
+        return "mycards";
+    }
 }
