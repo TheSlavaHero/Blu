@@ -38,6 +38,24 @@ public class CardService {
         return cardRepository.allCards(user.getId());
     }
 
+    @Transactional
+    public void deleteCards(long[] ids) {
+        for (long id : ids) {
+            cardRepository.deleteCardById(id);
+        }
+    }
+
+    @Transactional
+    public void topupCards(long[] ids, Double balance) {
+        for (long id : ids) {
+            Card card = cardRepository.getCardById(id);
+            Double balanceDB;
+            if (card.getBalance() == null) {balanceDB = 0.0;}
+            else {balanceDB = card.getBalance();}
+            cardRepository.setBalance(id, balance + balanceDB);
+        }
+    }
+
     public int randCvc() {
         Random rand = new Random();
         int number = rand.nextInt(1000);

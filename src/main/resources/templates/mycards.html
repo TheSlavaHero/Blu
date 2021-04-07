@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <link href="css/bootstrap.css" rel="stylesheet">
     <title>My Cards</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 </head>
 <body style="background-color:#AFE7FF">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
     <div class="container-fluid">
         <a class="navbar-brand offset-md-1" href="/main">
             <img src="images/logowhite.jpg" height="50">
@@ -54,9 +55,45 @@
     </div>
 </nav>
 
-<table class="table bg-light table-striped position-relative start-50 translate-middle-x mt-3 w-50 p-3 rounded-3">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light position-relative start-50 translate-middle-x mt-5 w-50  rounded-3">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+            <ul class="navbar-nav me-auto mb-lg-0">
+                <li>
+                    <a type="button" class="btn btn-default navbar-btn" href="/newcard">Add Card</a>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-default navbar-btn" id="delete_cards">Delete Cards</button>
+                </li>
+
+                <li>
+                    <div class="input-group position-relative start-100">
+                    <input type="number" class="form-control" id="balance" name="balance" placeholder="Enter amount" aria-label="Enter amount" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="topup">Top Up</button>
+                    </div>
+                </li>
+
+<!--            <form class="navbar-form navbar-left" role="search" action="/search" method="post">-->
+<!--                <div class="input-group">-->
+<!--                    <input type="number" class="form-control" placeholder="Enter amount" aria-label="Enter amount" aria-describedby="button-addon2">-->
+<!--                    <button class="btn btn-outline-secondary" type="button" id="Topup">Top Up</button>-->
+<!--                </div>-->
+<!--            </form>-->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<table class="table bg-light table-striped position-relative start-50 translate-middle-x w-50 p-3 rounded-3 mt-3">
     <thead>
     <tr>
+        <td></td>
         <td><b>Card number</b></td>
         <td><b>CVC</b></td>
         <td><b>Expiry date</b></td>
@@ -66,14 +103,16 @@
     </thead>
 
     <tr th:each="card : ${cards}">
-            <div th:if="${card.type == T(com.blubank.entity.Card.CardType).RED}">
-                <td th:text="${card.number}" class="table-danger"></td>
-                <td th:text="${card.cvc}" class="table-danger"></td>
-                <td th:text="${card.expiryDate}" class="table-danger"></td>
-                <td th:text="${card.type}" class="table-danger"></td>
-                <td th:text="${card.balance}" class="table-danger"></td>
-            </div>
+        <div th:if="${card.type == T(com.blubank.entity.Card.CardType).RED}">
+            <td><input type="checkbox" name="toDelete[]" th:value="${card.id}" class="position-relative start-50 translate-middle-x"/></td>
+            <td th:text="${card.number}" class="table-danger"></td>
+            <td th:text="${card.cvc}" class="table-danger"></td>
+            <td th:text="${card.expiryDate}" class="table-danger"></td>
+            <td th:text="${card.type}" class="table-danger"></td>
+            <td th:text="${card.balance}" class="table-danger"></td>
+        </div>
         <div th:if="${card.type == T(com.blubank.entity.Card.CardType).BLU}">
+            <td><input type="checkbox" name="toDelete[]" th:value="${card.id}" class="position-relative start-50 translate-middle-x"/></td>
             <td th:text="${card.number}" class="table-primary"></td>
             <td th:text="${card.cvc}" class="table-primary"></td>
             <td th:text="${card.expiryDate}" class="table-primary"></td>
@@ -81,6 +120,7 @@
             <td th:text="${card.balance}" class="table-primary"></td>
         </div>
         <div th:if="${card.type == T(com.blubank.entity.Card.CardType).GREEN}">
+            <td><input type="checkbox" name="toDelete[]" th:value="${card.id}" class="position-relative start-50 translate-middle-x"/></td>
             <td th:text="${card.number}" class="table-success"></td>
             <td th:text="${card.cvc}" class="table-success"></td>
             <td th:text="${card.expiryDate}" class="table-success"></td>
@@ -90,5 +130,31 @@
     </tr>
 </table>
 <script src="js/bootstrap.js"></script>
+<script>
+    $('#delete_cards').click(function () {
+        var data = {'toDelete[]': []};
+        $(":checked").each(function () {
+            data['toDelete[]'].push($(this).val());
+        });
+        $.post("/mycards/delete", data, function (data, status) {
+            window.location.reload();
+        });
+    });
+
+    $('#topup').click(function () {
+
+        var data = {'toDelete[]': [], 'balance': $('#balance').val()};
+
+        $(":checked").each(function () {
+            data['toDelete[]'].push($(this).val());
+        });
+
+        $.post("/mycards/topup", data, function (data, status) {
+            window.location.reload();
+        });
+    });
+
+
+</script>
 </body>
 </html>

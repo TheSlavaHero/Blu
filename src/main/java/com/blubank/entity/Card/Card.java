@@ -26,7 +26,7 @@ public class Card implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User cardHolder;
-    private double balance;
+    private Double balance;
 
 //    @OneToMany(mappedBy = "cardFrom")
 //    private List<Transaction> transactionsFrom = new ArrayList<>();
@@ -116,11 +116,11 @@ public class Card implements Serializable {
         this.transactionsTo = transactionsTo;
     }
 
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 }

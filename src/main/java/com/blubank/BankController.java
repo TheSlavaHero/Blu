@@ -8,6 +8,8 @@ import com.blubank.entity.User.UserRole;
 import com.blubank.entity.User.UserService;
 import com.blubank.entity.User.ApplicationUserForm;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -160,4 +162,26 @@ public class BankController {
     public String myCards() {
         return "mycards";
     }
+
+    @PostMapping("/mycards/delete")
+    public ResponseEntity<Void> delete(
+            @RequestParam(value = "toDelete[]", required = false)
+                    long[] toDelete) {
+        if (toDelete != null && toDelete.length > 0)
+            cardService.deleteCards(toDelete);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/mycards/topup")
+    public ResponseEntity<Void> topup(
+            @RequestParam(value = "toDelete[]", required = false) long[] toDelete,
+            @RequestParam(value = "balance", required = false) double balance) {
+        if (toDelete != null && toDelete.length > 0)
+            cardService.topupCards(toDelete, balance);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
+
+
