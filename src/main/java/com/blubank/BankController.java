@@ -1,22 +1,26 @@
 package com.blubank;
 
-import com.blubank.entity.Card.CardRepository;
+import com.blubank.entity.Card.Card;
 import com.blubank.entity.Card.CardService;
 import com.blubank.entity.Card.CardType;
+import com.blubank.entity.Transaction.TransactionForm;
+import com.blubank.entity.Transaction.TransactionService;
+import com.blubank.entity.User.ApplicationUserForm;
 import com.blubank.entity.User.User;
 import com.blubank.entity.User.UserRole;
 import com.blubank.entity.User.UserService;
-import com.blubank.entity.User.ApplicationUserForm;
-
+import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-import org.apache.commons.validator.routines.EmailValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class BankController {
@@ -32,10 +36,13 @@ public class BankController {
     @Autowired
     private CardService cardService;
 
+    @Autowired
+    private TransactionService transactionService;
+
     @GetMapping("/login")
-    public String login(@RequestParam(name="error", required=false, defaultValue="false") Boolean error,
-                        @RequestParam(name="successRegistration", required=false, defaultValue="false") Boolean successRegistration,
-                        @RequestParam(name="logout", required=false, defaultValue="false") Boolean logout,
+    public String login(@RequestParam(name = "error", required = false, defaultValue = "false") Boolean error,
+                        @RequestParam(name = "successRegistration", required = false, defaultValue = "false") Boolean successRegistration,
+                        @RequestParam(name = "logout", required = false, defaultValue = "false") Boolean logout,
                         Model model) {
         model.addAttribute("error", error);
         model.addAttribute("successRegistration", successRegistration);
@@ -54,9 +61,9 @@ public class BankController {
     }
 
     @GetMapping("/registerUser")
-    public String newUserForm(@RequestParam(name="emailExists", required=false, defaultValue="false") Boolean emailExists,
-                              @RequestParam(name="wrongEmail", required=false, defaultValue="false") Boolean wrongEmail,
-                              @RequestParam(name="samePassword", required=false, defaultValue="false") Boolean samePassword,
+    public String newUserForm(@RequestParam(name = "emailExists", required = false, defaultValue = "false") Boolean emailExists,
+                              @RequestParam(name = "wrongEmail", required = false, defaultValue = "false") Boolean wrongEmail,
+                              @RequestParam(name = "samePassword", required = false, defaultValue = "false") Boolean samePassword,
                               Model model) {
         model.addAttribute("applicationUserForm", new ApplicationUserForm());
         model.addAttribute("emailExists", emailExists);
@@ -75,7 +82,7 @@ public class BankController {
     public String update(@RequestParam(required = false, name = "user.name") String name,
                          @RequestParam(required = false, name = "user.surname") String surname,
                          @RequestParam(required = false, name = "user.password") String password,
-                         @RequestParam(required = false, name = "user.email")String email,
+                         @RequestParam(required = false, name = "user.email") String email,
                          @RequestParam(required = false, name = "confirmPassword") String confirmPassword,
                          @RequestParam(required = false) String phone,
                          @RequestParam(required = false) String age,
@@ -120,6 +127,7 @@ public class BankController {
         }
         return "main";
     }
+
     @PostMapping("/main")
     public String main() {
         return "main";
@@ -149,12 +157,48 @@ public class BankController {
         return "redirect:/mycards";
     }
 
+    @GetMapping("/mycards{page}")
+    public String myCards(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
+                          @PathVariable int page,
+                          Model model
+    ) {
+        if (page < 1) page = 1;
+        User currentUser = userService.findByEmail(user.getUsername());
+        List<Card> allCards = cardService.allCards(currentUser);
+        int totalPages = (allCards.size() - 1) / 8 + 1;
+        if (page > totalPages) page = totalPages;
+        List<Card> pageCards = new ArrayList<>();
+        for (int i = 0; (i < 8) && (lastPage(i, page, totalPages, allCards.size())); i++) {
+            pageCards.add(allCards.get(((page * 8) - 8) + i));
+        }
+        int[] totalPagesArr = new int[totalPages];
+        for (int i = 0; i < totalPagesArr.length; i++) {
+            totalPagesArr[i] = i + 1;
+        }
+        model.addAttribute("cards", pageCards);
+        model.addAttribute("totalPagesArr", totalPagesArr);
+        return "mycards";
+    }
+
+    public boolean lastPage(int i, int page, int totalPages, int allCardsSize) {
+        if (page == totalPages) {
+            return (i < ((allCardsSize - 1) % 8) + 1);
+        } else return true;
+    }
+
     @GetMapping("/mycards")
     public String myCards(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                           Model model
-                          ) {
+    ) {
         User currentUser = userService.findByEmail(user.getUsername());
+        List<Card> allCards = cardService.allCards(currentUser);
+        int totalPages = (allCards.size() - 1) / 8 + 1;
+        int[] totalPagesArr = new int[totalPages];
+        for (int i = 0; i < totalPagesArr.length; i++) {
+            totalPagesArr[i] = i + 1;
+        }
         model.addAttribute("cards", cardService.allCards(currentUser));
+        model.addAttribute("totalPagesArr", totalPagesArr);
         return "mycards";
     }
 
@@ -181,6 +225,37 @@ public class BankController {
             cardService.topupCards(toDelete, balance);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/transactions")
+    public String transactions(Model model) {
+        model.addAttribute("transactionForm", new TransactionForm());
+        return "transactions";
+    }
+
+    @PostMapping("/transactions")
+    public String performTransaction(@RequestParam(name = "transaction.cardFrom") String cardFrom,
+                                     @RequestParam(name = "cvc") String cvc,
+                                     @RequestParam(name = "date") String date,
+                                     @RequestParam(name = "transaction.cardTo") String cardTo,
+                                     @RequestParam(name = "transaction.amount") String amount,
+
+                                     @RequestParam(name = "incorrectCard", required = false, defaultValue = "false") Boolean incorrectCard,
+                                     @RequestParam(name = "notEnoughMoney", required = false, defaultValue = "false") Boolean notEnoughMoney,
+                                     Model model) {
+        model.addAttribute("transactionForm", new TransactionForm());
+        int intCvc = Integer.parseInt(cvc);
+        if (!cardService.checkCard(cardFrom, intCvc, date)) {
+            model.addAttribute("incorrectCard", incorrectCard);
+            return "transactions";
+        }
+        Double amountDouble = Double.parseDouble(amount);
+        if (!cardService.checkBalanceOnCard(cardFrom, amountDouble)) {
+            model.addAttribute("notEnoughMoney", notEnoughMoney);
+            return "transactions";
+        }
+        transactionService.performTransaction(cardFrom, cardTo, amount);
+        return "transactions";
     }
 }
 

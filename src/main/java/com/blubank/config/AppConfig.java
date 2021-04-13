@@ -28,7 +28,7 @@ public class AppConfig extends GlobalMethodSecurityConfiguration {
     }
 
     @Bean
-    public EmailValidator emailValidator () {
+    public EmailValidator emailValidator() {
         return EmailValidator.getInstance();
     }
 
@@ -38,8 +38,7 @@ public class AppConfig extends GlobalMethodSecurityConfiguration {
         return new CommandLineRunner() {
             @Override
             public void run(String... strings) {
-                userService.addUser("Super", "Admin", encoder.encode("qwe"), UserRole.ADMIN, "slava", "88005553535", "19");
-                userService.addUser("Sohpie", "", encoder.encode("password1"), UserRole.MODERATOR, "Sophie", "", "");
+                userService.addUser("Super", "Admin", encoder.encode("admin"), UserRole.ADMIN, "admin", "", "");
                 userService.addUser("Giga", "Tester", encoder.encode("test"), UserRole.MODERATOR, "test", "", "");
             }
         };

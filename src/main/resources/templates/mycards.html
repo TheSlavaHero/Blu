@@ -27,19 +27,8 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="/mycards">My Cards</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Transactions
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Convert currency</a></li>
-                        <li><a class="dropdown-item" href="#">Send money</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Want some money?</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="/transactions">Transactions</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/about">About Us</a>
@@ -63,29 +52,28 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+
             <ul class="navbar-nav me-auto mb-lg-0">
                 <li>
                     <a type="button" class="btn btn-default navbar-btn" href="/newcard">Add Card</a>
                 </li>
                 <li>
-                    <button type="button" class="btn btn-default navbar-btn" id="delete_cards">Delete Cards</button>
+                    <button type="button" class="btn btn-default navbar-btn" id="delete_cards">Delete Cards
+                    </button>
                 </li>
-
-                <li>
-                    <div class="input-group position-relative start-100">
-                    <input type="number" class="form-control" id="balance" name="balance" placeholder="Enter amount" aria-label="Enter amount" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="button" id="topup">Top Up</button>
-                    </div>
-                </li>
-
-<!--            <form class="navbar-form navbar-left" role="search" action="/search" method="post">-->
-<!--                <div class="input-group">-->
-<!--                    <input type="number" class="form-control" placeholder="Enter amount" aria-label="Enter amount" aria-describedby="button-addon2">-->
-<!--                    <button class="btn btn-outline-secondary" type="button" id="Topup">Top Up</button>-->
-<!--                </div>-->
-<!--            </form>-->
-            </ul>
+                <div class="col-5 position-absolute top-50 end-0 translate-middle-y p-3">
+                    <li>
+                        <div class="input-group align-end">
+                            <input type="number" class="form-control" id="balance" name="balance"
+                                   placeholder="Enter amount"
+                                   aria-label="Enter amount" aria-describedby="button-addon2">
+                            <button class="btn btn-outline-secondary" type="button" id="topup">Top Up</button>
+                        </div>
+                    </li>
+                </div>
         </div>
+        </ul>
+    </div>
     </div>
 </nav>
 
@@ -104,7 +92,8 @@
 
     <tr th:each="card : ${cards}">
         <div th:if="${card.type == T(com.blubank.entity.Card.CardType).RED}">
-            <td><input type="checkbox" name="toDelete[]" th:value="${card.id}" class="position-relative start-50 translate-middle-x"/></td>
+            <td><input type="checkbox" name="toDelete[]" th:value="${card.id}"
+                       class="position-relative start-50 translate-middle-x"/></td>
             <td th:text="${card.number}" class="table-danger"></td>
             <td th:text="${card.cvc}" class="table-danger"></td>
             <td th:text="${card.expiryDate}" class="table-danger"></td>
@@ -112,7 +101,8 @@
             <td th:text="${card.balance}" class="table-danger"></td>
         </div>
         <div th:if="${card.type == T(com.blubank.entity.Card.CardType).BLU}">
-            <td><input type="checkbox" name="toDelete[]" th:value="${card.id}" class="position-relative start-50 translate-middle-x"/></td>
+            <td><input type="checkbox" name="toDelete[]" th:value="${card.id}"
+                       class="position-relative start-50 translate-middle-x"/></td>
             <td th:text="${card.number}" class="table-primary"></td>
             <td th:text="${card.cvc}" class="table-primary"></td>
             <td th:text="${card.expiryDate}" class="table-primary"></td>
@@ -120,7 +110,8 @@
             <td th:text="${card.balance}" class="table-primary"></td>
         </div>
         <div th:if="${card.type == T(com.blubank.entity.Card.CardType).GREEN}">
-            <td><input type="checkbox" name="toDelete[]" th:value="${card.id}" class="position-relative start-50 translate-middle-x"/></td>
+            <td><input type="checkbox" name="toDelete[]" th:value="${card.id}"
+                       class="position-relative start-50 translate-middle-x"/></td>
             <td th:text="${card.number}" class="table-success"></td>
             <td th:text="${card.cvc}" class="table-success"></td>
             <td th:text="${card.expiryDate}" class="table-success"></td>
@@ -129,6 +120,23 @@
         </div>
     </tr>
 </table>
+
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+
+        <li th:each="pageNumber : ${totalPagesArr}" class="page-item">
+            <a class="page-link " th:href="@{/mycards{pagenumber}(pagenumber=${pageNumber})} " style="color:black"
+               th:text="${pageNumber}"></a>
+        </li>
+
+    </ul>
+</nav>
+
+<a type="button" href="/mycards" class="btn btn-light position-relative start-50 translate-middle-x mb-5">All Cards
+</a>
+
+
 <script src="js/bootstrap.js"></script>
 <script>
     $('#delete_cards').click(function () {

@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Cards")
@@ -28,13 +29,9 @@ public class Card implements Serializable {
     private User cardHolder;
     private Double balance;
 
-//    @OneToMany(mappedBy = "cardFrom")
-//    private List<Transaction> transactionsFrom = new ArrayList<>();
-//    @OneToMany(mappedBy = "cardTo")
-//    private List<Transaction> transactionsTo = new ArrayList<>();
 
     @OneToMany(mappedBy = "cardFrom", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set transactionsFrom;
+
     private Set<Transaction> transactionsFrom = new HashSet(0);
 
     @OneToMany(mappedBy = "cardTo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -123,4 +120,5 @@ public class Card implements Serializable {
     public void setBalance(Double balance) {
         this.balance = balance;
     }
+
 }

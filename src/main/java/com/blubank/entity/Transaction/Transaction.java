@@ -4,7 +4,6 @@ import com.blubank.entity.Card.Card;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "Transactions")
@@ -24,12 +23,12 @@ public class Transaction {
     private Card cardTo;
 
     private double amount;
-    private Date transactionTime;
+    private String transactionTime;
 
     public Transaction() {
     }
 
-    public Transaction(Card cardFrom, Card cardTo, double amount, Date transactionTime) {
+    public Transaction(Card cardFrom, Card cardTo, double amount, String transactionTime) {
         this.cardFrom = cardFrom;
         this.cardTo = cardTo;
         this.amount = amount;
@@ -68,11 +67,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Date getTransactionTime() {
+    public String getTransactionTime() {
         return transactionTime;
     }
 
-    public void setTransactionTime(Date transactionTime) {
+    public void setTransactionTime(String transactionTime) {
         this.transactionTime = transactionTime;
     }
 }

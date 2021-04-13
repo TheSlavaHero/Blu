@@ -5,7 +5,7 @@ import java.util.Stack;
 import java.util.Vector;
 
 public class RandomCardNumberGenerator {
-    public static final String[] MASTERCARD_PREFIX_LIST = new String[] { "51","52","53","54","55" };
+    public static final String[] MASTERCARD_PREFIX_LIST = new String[]{"51", "52", "53", "54", "55"};
 
     static String strrev(String str) {
         if (str == null)
@@ -16,6 +16,7 @@ public class RandomCardNumberGenerator {
         }
         return revstr;
     }
+
     static String completed_number(String prefix, int length) {
         String ccnumber = prefix;
         while (ccnumber.length() < (length - 1)) {
@@ -47,8 +48,8 @@ public class RandomCardNumberGenerator {
         ccnumber += checkdigit;
         return ccnumber;
     }
-    public static String[] credit_card_number(String[] prefixList, int length,int howMany)
-    {
+
+    public static String[] credit_card_number(String[] prefixList, int length, int howMany) {
         Stack<String> result = new Stack<String>();
         for (int i = 0; i < howMany; i++) {
             int randomArrayIndex = (int) Math.floor(Math.random()
@@ -58,15 +59,16 @@ public class RandomCardNumberGenerator {
         }
         return result.toArray(new String[result.size()]);
     }
+
     public static String[] generateMasterCardNumbers(int howMany) {
         return credit_card_number(MASTERCARD_PREFIX_LIST, 16, howMany);
     }
+
     public static String generateMasterCardNumber() {
         return credit_card_number(MASTERCARD_PREFIX_LIST, 16, 1)[0];
     }
 
-    private static int sumToSingleDigit(int k)
-    {
+    private static int sumToSingleDigit(int k) {
         if (k < 10)
             return k;
         return sumToSingleDigit(k / 10) + (k % 10);

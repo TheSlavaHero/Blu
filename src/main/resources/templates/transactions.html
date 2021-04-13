@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <title>Transactions</title>
+</head>
+<body style="background-color:#AFE7FF">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand offset-md-1" href="/main">
+            <img src="images/logowhite.jpg" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/main">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/newcard">New Card</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mycards">My Cards</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/transactions">Transactions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/version">Versions</a>
+                </li>
+            </ul>
+            <form class="d-flex" action="/logout" method="post">
+                <button class="btn btn-outline-success" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="mt-4 mb-3 position-relative start-50 translate-middle-x w-50 p-3 rounded-3"
+     style="background: #FFFFFF;">
+
+    <form th:action="@{/transactions}" th:object="${transactionForm}" method="post">
+        <div class="row g-5">
+            <div class="col">
+                <input type="text" th:field="*{transaction.cardFrom}" class="form-control"
+                       placeholder="Your card number">
+                <div class="row g-3 mt-1">
+                    <div class="col form-floating">
+                        <input type="number" th:field="*{cvc}" class="form-control" placeholder="CVC" id="floatingCvc">
+                        <label for="floatingCvc">CVC</label>
+                    </div>
+                    <div class="col form-floating">
+                        <input name="credit-expires" th:field="*{date}" class="form-control" type="tel" maxlength="7"
+                               placeholder="MM / YY" id="floatingDate">
+                        <label for="floatingDate">MM / YY</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <input type="text" th:field="*{transaction.cardTo}" class="form-control"
+                       placeholder="Receiver card number">
+                <div class="row g-3 mt-1">
+                    <div class="col form-floating">
+                        <input type="number" th:field="*{transaction.amount}" class="form-control"
+                               placeholder="Amount to transfer" id="floatingAmount">
+                        <label for="floatingAmount">Amount</label>
+                    </div>
+                    <div class="col">
+                        <button type="submit"
+                                class="btn btn-primary mb-3 btn-lg position-relative top-50 end-0 translate-middle-y">
+                            Transfer
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+
+</div>
+
+
+<script src="js/bootstrap.js"></script>
+</body>
+</html>
